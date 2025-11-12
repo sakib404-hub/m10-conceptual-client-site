@@ -1,10 +1,12 @@
 import React from "react";
 import { useContext } from "react";
+import Swal from "sweetalert2";
 import { FaUserCircle, FaGoogle, FaGithub } from "react-icons/fa";
 import { Link } from "react-router"; // make sure it's react-router-dom
 import { AuthContext } from "../../../../../../Context/AuthContext/AuthContext";
 
 const UserLogin = () => {
+    const { signInWithGoogle, setUser } = useContext(AuthContext);
     const handleLogin = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -14,8 +16,27 @@ const UserLogin = () => {
         console.log(user);
     };
 
-    const { user } = useContext(AuthContext);
-    console.log(user.name, user.email);
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then((result) => {
+                setUser(result.user); // update context
+                Swal.fire({
+                    title: "Login Successful!",
+                    text: `Welcome back, ${result.user.displayName || result.user.userName || "User"}!`,
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    }
+                });
+            })
+            .catch((error) => console.log(error.message));
+    };
 
     return (
         <div className="hero bg-base-200 min-h-screen">
@@ -70,18 +91,11 @@ const UserLogin = () => {
                             <div className="flex flex-col gap-2 mt-4">
                                 {/* Google Sign-In */}
                                 <button
+                                    onClick={handleGoogleSignIn}
                                     type="button"
                                     className="btn btn-outline btn-success w-full flex items-center justify-center gap-2"
                                 >
                                     <FaGoogle className="text-red-500" /> Sign in with Google
-                                </button>
-
-                                {/* GitHub Sign-In */}
-                                <button
-                                    type="button"
-                                    className="btn btn-outline btn-neutral w-full flex items-center justify-center gap-2"
-                                >
-                                    <FaGithub /> Sign in with GitHub
                                 </button>
                             </div>
                         </fieldset>

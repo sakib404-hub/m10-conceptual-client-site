@@ -1,28 +1,43 @@
-import React from 'react';
 import { NavLink, useNavigate } from 'react-router';
-import { FaUserCircle } from "react-icons/fa"; // user icon
+import { FaUserCircle } from "react-icons/fa";
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext/AuthContext';
+import Swal from "sweetalert2";
+
 
 const Header = () => {
-    // Dummy user data (replace with your real auth state)
-    // const user = {
-    //     isLoggedIn: true,
-    //     name: "Shakib Hossen",
-    //     photoURL: "https://i.ibb.co/QmY7z4Z/profile.jpg"
-    // };
-    const user = {};
+    const { user, logOut } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const links = (
         <div className='text-base font-semibold flex flex-col lg:flex-row gap-8'>
             <NavLink to={'/'} className={'nav-links px-2 py-1'}>Home</NavLink>
             <NavLink to={'/allmodels'} className={'nav-links px-2 py-1'}>All Models</NavLink>
             <NavLink to={'/addmodels'} className={'nav-links px-2 py-1'}>Add Models</NavLink>
-        </div>);
+        </div>
+    );
 
-    const path = useNavigate();
     const handleLoginButtonClick = () => {
-        console.log('Handle Login Button is CLicked!');
-        path('/login');
-    }
+        navigate('/login');
+    };
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                Swal.fire({
+                    title: "Logged Out!",
+                    text: "You have successfully logged out.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    toast: true,
+                    position: "center",
+                    timerProgressBar: true
+                });
+
+            })
+            .catch((error) => console.log(error.message));
+    };
 
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -49,20 +64,29 @@ const Header = () => {
                 </ul>
             </div>
 
-            <div className="navbar-end">
-                {user?.isLoggedIn ? (
-                    <div className="tooltip tooltip-left" data-tip={user.name}>
-                        <img
-                            src={user.photoURL}
-                            alt="User Avatar"
-                            className="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer"
-                        />
-                    </div>
+            <div className="navbar-end flex items-center gap-2">
+                {user ? (
+                    <>
+                        <div className="tooltip tooltip-left" data-tip={user.email}>
+                            <img
+                                src={user.photoURL}
+                                alt="User Avatar"
+                                className="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer"
+                            />
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="btn btn-outline btn-error btn-sm"
+                        >
+                            Logout
+                        </button>
+                    </>
                 ) : (
                     <div className="tooltip tooltip-left" data-tip="Login">
                         <FaUserCircle
                             onClick={handleLoginButtonClick}
-                            className="text-3xl text-gray-600 cursor-pointer hover:text-blue-500" />
+                            className="text-3xl text-gray-600 cursor-pointer hover:text-blue-500"
+                        />
                     </div>
                 )}
             </div>

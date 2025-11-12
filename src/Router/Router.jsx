@@ -5,6 +5,7 @@ import AllModels from "../Components/AllModels/AllModels";
 import AddModels from "../Components/AddModels/AddModels";
 import Login from "../Components/Authentication/Login/Login/Login/HandleLogin/HandleLogin/Login";
 import Register from "../Components/Authentication/Login/Login/Login/HandleLogin/HandleLogin/register";
+import Loader from "../Components/Loader/Loader";
 
 export const router = createBrowserRouter([
     {
@@ -17,7 +18,9 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/allmodels',
-                Component: AllModels
+                loader: () => fetch('http://localhost:5002/allmodels'),
+                Component: AllModels,
+                hydrateFallbackElement: <Loader></Loader>
             },
             {
                 path: '/addmodels',
