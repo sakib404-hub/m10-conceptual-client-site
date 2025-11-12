@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useLoaderData } from 'react-router';
 
-const AddModels = () => {
-    const { user } = useContext();
+const UpdateModel = () => {
+    const { name, category, description, thumbnailUrl, _id } = useLoaderData();
     const handleFromSubmission = (event) => {
         event.preventDefault();
 
@@ -9,30 +10,32 @@ const AddModels = () => {
             name: event.target.name.value,
             category: event.target.category.value,
             description: event.target.description.value,
-            thumbnailUrl: event.target.thumbnailUrl.value,
-            createdBy: user.email,
-            createdAt: new Date(),
-            downloads: 0
+            thumbnailUrl: event.target.thumbnailUrl.value
         }
         console.log(formData);
 
-        fetch('http://localhost:5002/allmodels', {
-            method: 'POST',
+        fetch(`http://localhost:5002/allmodels/${_id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData)
         })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                console.log(data);
+                event.target.reset();
+            })
             .catch((error) => console.log(error.message))
     }
     return (
         <div className="card w-full max-w-md mx-auto shadow-lg bg-base-100 border border-gray-200 my-10">
             <div className="card-body">
-                <h2 className="card-title text-center mb-2">Add New Model</h2>
+                <div className='flex items-center justify-center'>
+                    <h2 className="card-title text-center mb-2">Update Model</h2>
+                </div>
                 <p className="text-sm text-gray-500 text-center mb-4">
-                    Fill in the details below to add your 3D model to the collection.
+                    Change in the details below to Update your 3D model to the collection.
                 </p>
 
                 <form
@@ -49,6 +52,7 @@ const AddModels = () => {
                             type="text"
                             name="name"
                             id='name'
+                            defaultValue={name}
                             placeholder="Enter model name"
                             className="input input-bordered w-full"
                             required
@@ -65,6 +69,7 @@ const AddModels = () => {
                         <select
                             id='category'
                             name="category"
+                            defaultValue={category}
                             className="select select-bordered w-full"
                             required>
                             <option value="">Select Category</option>
@@ -86,6 +91,7 @@ const AddModels = () => {
                         <textarea
                             id='description'
                             name="description"
+                            defaultValue={description}
                             placeholder="Short description of your model"
                             className="textarea textarea-bordered w-full"
                             rows="3"
@@ -103,6 +109,7 @@ const AddModels = () => {
                         <input
                             id='thumbnailUrl'
                             type="url"
+                            defaultValue={thumbnailUrl}
                             name="thumbnailUrl"
                             placeholder="https://example.com/image.jpg"
                             className="input input-bordered w-full"
@@ -119,8 +126,7 @@ const AddModels = () => {
                 </form>
             </div>
         </div>
-
     );
 };
 
-export default AddModels;
+export default UpdateModel;

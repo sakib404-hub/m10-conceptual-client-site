@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import {
     BarChart,
     Bar,
@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 const ModelDetailsCard = () => {
+    const path = useNavigate();
     const model = useLoaderData();
     const {
         name,
@@ -39,6 +40,10 @@ const ModelDetailsCard = () => {
         { day: "Sat", downloads: 7 },
         { day: "Sun", downloads: 6 },
     ];
+
+    const handleUpdateButtonClick = () => {
+        path(`/UpdateModel/${model._id}`)
+    }
 
     return (
         <div className="flex items-center justify-center my-15">
@@ -92,7 +97,10 @@ const ModelDetailsCard = () => {
 
                     {/* Action buttons */}
                     <div className="mt-4 flex gap-2">
-                        <button className="btn btn-primary btn-sm">View Model</button>
+                        <button
+                            onClick={handleUpdateButtonClick}
+                            className="btn btn-primary btn-sm">Update Model</button
+                        >
                         <button className="btn btn-outline btn-sm">Download</button>
                         <button className="btn btn-success btn-sm">Add to Favorites</button>
                     </div>
