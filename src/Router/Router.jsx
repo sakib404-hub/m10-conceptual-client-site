@@ -6,6 +6,8 @@ import AddModels from "../Components/AddModels/AddModels";
 import Login from "../Components/Authentication/Login/Login/Login/HandleLogin/HandleLogin/Login";
 import Register from "../Components/Authentication/Login/Login/Login/HandleLogin/HandleLogin/register";
 import Loader from "../Components/Loader/Loader";
+import PrivateRoute from "../Components/PrivateRoute/PrivateRoute";
+import ModelDetailsCard from "../Components/ModelDetails/ModelDetails";
 
 export const router = createBrowserRouter([
     {
@@ -23,8 +25,17 @@ export const router = createBrowserRouter([
                 hydrateFallbackElement: <Loader></Loader>
             },
             {
+                path: '/modelDetails/:id',
+                element: <PrivateRoute>
+                    <ModelDetailsCard></ModelDetailsCard>
+                </PrivateRoute>,
+                loader: ({ params }) => fetch(`http://localhost:5002/allmodels/${params.id}`)
+            },
+            {
                 path: '/addmodels',
-                Component: AddModels
+                element: <PrivateRoute>
+                    <AddModels></AddModels>
+                </PrivateRoute>
             },
             {
                 path: '/login',

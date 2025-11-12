@@ -2,11 +2,14 @@ import React from "react";
 import { useContext } from "react";
 import Swal from "sweetalert2";
 import { FaUserCircle, FaGoogle, FaGithub } from "react-icons/fa";
-import { Link } from "react-router"; // make sure it's react-router-dom
+import { Link, useLocation, useNavigate } from "react-router"; // make sure it's react-router-dom
 import { AuthContext } from "../../../../../../Context/AuthContext/AuthContext";
 
 const UserLogin = () => {
     const { signInWithGoogle, setUser } = useContext(AuthContext);
+    const path = useNavigate();
+    const location = useLocation();
+
     const handleLogin = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -34,6 +37,7 @@ const UserLogin = () => {
                         toast.addEventListener("mouseleave", Swal.resumeTimer);
                     }
                 });
+                path(location.state?.from?.pathname || '/');
             })
             .catch((error) => console.log(error.message));
     };

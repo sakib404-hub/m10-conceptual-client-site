@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const ModelCard = ({ model }) => {
     const {
@@ -17,6 +18,11 @@ const ModelCard = ({ model }) => {
         month: "long",
         day: "numeric",
     });
+
+    const path = useNavigate();
+    const handleViewMoreButtonClick = () => {
+        path(`/modelDetails/${model._id}`)
+    }
 
     return (
         <div className="card w-full max-w-sm bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
@@ -48,7 +54,9 @@ const ModelCard = ({ model }) => {
 
                 {/* Action Button */}
                 <div className="card-actions justify-end mt-4">
-                    <button className="btn btn-sm btn-primary">View Model</button>
+                    <button
+                        onClick={handleViewMoreButtonClick}
+                        className="btn btn-sm btn-primary">View Model</button>
                 </div>
             </div>
         </div>

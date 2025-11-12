@@ -5,6 +5,7 @@ import { auth } from '../../../Firebase/firebase.config';
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loader, setLoader] = useState(true);
 
     const signInWithGoogle = () => {
         const googleProvider = new GoogleAuthProvider();
@@ -12,6 +13,7 @@ const AuthProvider = ({ children }) => {
     }
 
     const logOut = () => {
+        setLoader(true);
         return signOut(auth);
     }
 
@@ -20,6 +22,7 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, (currentUSer) => {
             if (currentUSer) {
                 setUser(currentUSer);
+                setLoader(false);
             } else {
                 setUser(null)
             }
@@ -35,6 +38,8 @@ const AuthProvider = ({ children }) => {
         setUser,
         signInWithGoogle,
         logOut,
+        loader,
+        setLoader
     };
 
     return (
