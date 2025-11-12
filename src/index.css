@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "daisyui"{
+themes : light --default, dark cupcake;
+};
+
+.nav-links:hover{
+    color: yellowgreen;
+}
+.nav-links.active{
+    color: yellowgreen;
+    border-bottom: 4px solid yellowgreen;
+}

@@ -1,0 +1,73 @@
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router';
+import { FaUserCircle } from "react-icons/fa"; // user icon
+
+const Header = () => {
+    // Dummy user data (replace with your real auth state)
+    // const user = {
+    //     isLoggedIn: true,
+    //     name: "Shakib Hossen",
+    //     photoURL: "https://i.ibb.co/QmY7z4Z/profile.jpg"
+    // };
+    const user = {};
+
+    const links = (
+        <div className='text-base font-semibold flex flex-col lg:flex-row gap-8'>
+            <NavLink to={'/'} className={'nav-links px-2 py-1'}>Home</NavLink>
+            <NavLink to={'/allmodels'} className={'nav-links px-2 py-1'}>All Models</NavLink>
+            <NavLink to={'/addmodels'} className={'nav-links px-2 py-1'}>Add Models</NavLink>
+        </div>);
+
+    const path = useNavigate();
+    const handleLoginButtonClick = () => {
+        console.log('Handle Login Button is CLicked!');
+        path('/login');
+    }
+
+    return (
+        <div className="navbar bg-base-100 shadow-sm">
+            <div className="navbar-start">
+                <div className="dropdown">
+                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+                        </svg>
+                    </div>
+                    <ul
+                        tabIndex="-1"
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                    >
+                        {links}
+                    </ul>
+                </div>
+                <a className="btn btn-ghost text-xl font-bold">3D ModelHub</a>
+            </div>
+
+            <div className="navbar-center hidden lg:flex">
+                <ul className="menu menu-horizontal px-1">
+                    {links}
+                </ul>
+            </div>
+
+            <div className="navbar-end">
+                {user?.isLoggedIn ? (
+                    <div className="tooltip tooltip-left" data-tip={user.name}>
+                        <img
+                            src={user.photoURL}
+                            alt="User Avatar"
+                            className="w-10 h-10 rounded-full border-2 border-blue-500 cursor-pointer"
+                        />
+                    </div>
+                ) : (
+                    <div className="tooltip tooltip-left" data-tip="Login">
+                        <FaUserCircle
+                            onClick={handleLoginButtonClick}
+                            className="text-3xl text-gray-600 cursor-pointer hover:text-blue-500" />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default Header;
