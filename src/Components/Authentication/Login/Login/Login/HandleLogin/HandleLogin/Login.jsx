@@ -1,6 +1,8 @@
 import React from "react";
+import { useContext } from "react";
 import { FaUserCircle, FaGoogle, FaGithub } from "react-icons/fa";
 import { Link } from "react-router"; // make sure it's react-router-dom
+import { AuthContext } from "../../../../../../Context/AuthContext/AuthContext";
 
 const UserLogin = () => {
     const handleLogin = (e) => {
@@ -11,6 +13,9 @@ const UserLogin = () => {
         const user = { email, password };
         console.log(user);
     };
+
+    const { user } = useContext(AuthContext);
+    console.log(user.name, user.email);
 
     return (
         <div className="hero bg-base-200 min-h-screen">
