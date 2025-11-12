@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-const ModelCard = ({ model }) => {
+const ModelCard = ({ model, handleDelete }) => {
     const {
+        _id,
         name,
         category,
         description,
@@ -20,15 +22,20 @@ const ModelCard = ({ model }) => {
     });
 
     const path = useNavigate();
+
     const handleViewMoreButtonClick = () => {
-        path(`/modelDetails/${model._id}`)
-    }
+        path(`/modelDetails/${_id}`);
+    };
 
     return (
         <div className="card w-full max-w-sm bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
             {/* Thumbnail */}
             <figure>
-                <img src={thumbnailUrl} alt={name} className="h-48 w-full object-cover" />
+                <img
+                    src={thumbnailUrl}
+                    alt={name}
+                    className="h-48 w-full object-cover rounded-t-lg"
+                />
             </figure>
 
             <div className="card-body">
@@ -52,11 +59,21 @@ const ModelCard = ({ model }) => {
                     </p>
                 </div>
 
-                {/* Action Button */}
-                <div className="card-actions justify-end mt-4">
+                {/* Action Buttons: Delete left, View Model right */}
+                <div className="card-actions justify-between mt-4">
+                    <button
+                        onClick={() => handleDelete(_id)}
+                        className="btn btn-sm btn-outline btn-error flex items-center gap-1"
+                    >
+                        <RiDeleteBin6Line /> Delete
+                    </button>
+
                     <button
                         onClick={handleViewMoreButtonClick}
-                        className="btn btn-sm btn-primary">View Model</button>
+                        className="btn btn-sm btn-primary"
+                    >
+                        View Model
+                    </button>
                 </div>
             </div>
         </div>

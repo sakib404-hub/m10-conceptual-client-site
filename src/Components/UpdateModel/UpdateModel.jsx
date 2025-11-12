@@ -24,7 +24,6 @@ const UpdateModel = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
-                event.target.reset();
             })
             .catch((error) => console.log(error.message))
     }
